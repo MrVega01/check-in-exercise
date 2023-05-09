@@ -7,12 +7,11 @@ const dbCredentials = {
   password: PASSWORD_DB,
   database: DATABASE_DB
 }
-const connection = mysql.createConnection(dbCredentials)
 
-function getConnection () {
+function getConnection (callback) {
+  const connection = mysql.createConnection(dbCredentials)
   connection.connect((error) => {
-    if (error) throw error
-    else console.log('Database connected')
+    if (error) callback(error)
   })
   return connection
 }
