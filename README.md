@@ -4,6 +4,39 @@
 
 Es una API REST creada con Node.js, Express.js y MySQL creada con el fin de simular un proceso de check-in en un aeropuerto.
 
+## Instalación
+
+1. Clonar este repositorio GitHub:
+
+```bash
+git clone https://github.com/MrVega01/check-in-exercise.git
+```
+2. Instalar las dependencias utilizando npm.
+
+```bash
+npm install
+```
+
+## Arranque
+
+``npm start``: Inicia la API normalmente.
+
+``npm run dev``: Inicia la API con nodemon, lo que actualiza la app al detectar cualquier cambio en el código.
+
+## Estatus
+
+**Node**: >= 18.16.0
+
+**NPM**: >= 9.5.1
+
+## PORT
+
+El puerto por defecto es ``3000`` lo que significa al arrancar la API en local se montará en ``localhost:3000``
+
+## Variables de entorno
+
+La funcionalidad de la API requiere de variables de entorno para la autenticación en la base de datos al ser esta información sensible. De igual modo es posible hacer cambios en la API a través de variables de entorno, como lo puede ser ``PORT``, que permite modificar el puerto en el que arranca la misma (útil especialmente para despliegue). Para ver la lista de variables de entorno requeridas, ver archivo ``.env.example``
+
 ## Problema
 
 Se busca crear una API REST, lenguaje y/o framework a libre elección, con un solo endpoint que permita consultar por el ID del vuelo y retornar la simulación. Una compra puede tener muchas tarjetas de embarque asociadas, pero estas tarjetas pueden no tener un asiento asociado, siempre tendrá un tipo de asiento, por lo tanto, al retornar la simulación del check-in se debe asignar el asiento a cada tarjeta de embarque.
@@ -29,23 +62,3 @@ La proceso de asignación de asientos sigue el siguiente orden:
 * Registrar a los grupos de personas mayores de edad lo más cercano posible entre ellos.
 
 Este proceso también comprende la asignación de los asientos según su tipo.
-
-## Estatus
-
-**Node**: >= 18.16.0
-
-**NPM**: >= 9.5.1
-
-## Arranque
-
-``npm start``: Inicia la API normalmente.
-
-``npm run dev``: Inicia la API con nodemon, lo que actualiza la app al detectar cualquier cambio en el código.
-
-## PORT
-
-El puerto por defecto es ``3000`` lo que significa al arrancar la API en local se montará en ``localhost:3000``
-
-## Variables de entorno
-
-La funcionalidad de la API requiere de variables de entorno para la autenticación en la base de datos al ser esta información sensible. De igual modo es posible hacer cambios en la API a través de variables de entorno, como lo puede ser ``PORT``, que permite modificar el puerto en el que arranca la misma (útil especialmente para despliegue). Para ver la lista de variables de entorno requeridas, ver archivo ``.env.example``
