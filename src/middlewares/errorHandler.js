@@ -6,9 +6,9 @@ const ERRORS_LIST = {
     })
   },
   defaultError: (res) => {
-    res.status(500).json({
-      code: 500,
-      errors: 'internal server error'
+    res.status(400).json({
+      code: 400,
+      errors: 'could not connect to db'
     })
   }
 }
