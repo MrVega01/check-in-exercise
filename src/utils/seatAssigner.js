@@ -78,7 +78,6 @@ function assignSeatToGroup (airplane, airplaneName, typeId, minors, group) {
     const groupSorted = group.sort(function (a, b) {
       return a.age - b.age
     })
-    console.log(groupSorted)
     columnDistribution[type].forEach(columns => {
       for (let i = 0; i <= seatsLimits[type][1] - seatsLimits[type][0]; i++) {
         if (columns.filter(column => airplane[type][column][i] === 0).length >= 2) {
@@ -117,10 +116,7 @@ function generatePassengerInfo (passenger, seatId) {
     boardingPassId: passenger.boarding_pass_id,
     purchaseId: passenger.purchase_id,
     seatTypeId: passenger.seat_type_id,
-    seatId,
-
-    testRow: passenger.seat_row,
-    testColumn: passenger.seat_column
+    seatId
   })
 }
 function getSeatId (seats, seatRow, seatColumn, airplaneId) {

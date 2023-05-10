@@ -1,8 +1,10 @@
+const cors = require('cors')
 const app = require('./app')
 const errorNotFound = require('./middlewares/404')
 const errorHandler = require('./middlewares/errorHandler')
 const flightsRoutes = require('./routes/flights.routes')
 
+app.use(cors())
 app.use(flightsRoutes)
 
 app.use(errorNotFound)

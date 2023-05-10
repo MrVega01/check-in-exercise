@@ -78,25 +78,4 @@ router.get('/flights/:id/passengers', (req, res, next) => {
   connection.end()
 })
 
-router.get('/flights/test', (req, res, next) => {
-  const connection = getConnection(next)
-  connection.query(`SELECT
-
-  *
-
-  FROM seat_type;`, (error, results, fields) => {
-    if (error) {
-      next(error)
-      return
-    }
-    res.status(200).json({
-      code: 200,
-      data: {
-        ...results
-      }
-    })
-  })
-  connection.end()
-})
-
 module.exports = router
