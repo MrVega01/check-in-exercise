@@ -11,6 +11,7 @@ function seatAssigner ({ data, airplaneName, next }) {
     connection.query('SELECT * from seat', (error, results, fields) => {
       if (error) {
         next(error)
+        return
       }
       const seatsAssigned = data.filter(passenger => passenger.seat_id !== null)
       const seatsUnassigned = data.filter(passenger => passenger.seat_id === null)
@@ -120,7 +121,7 @@ function generatePassengerInfo (passenger, seatId) {
   })
 }
 function getSeatId (seats, seatRow, seatColumn, airplaneId) {
-  const seat = seats.find(seat => (
+  const seat = seats?.find(seat => (
     seat.seat_row === seatRow &&
     seat.seat_column === seatColumn &&
     seat.airplane_id === airplaneId
