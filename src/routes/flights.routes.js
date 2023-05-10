@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const getConnection = require('../database/connection')
+const seatAssigner = require('../utils/seatAssigner')
 
 const router = Router()
 
@@ -20,46 +21,78 @@ router.get('/flights/:id/passengers', (req, res, next) => {
   flight.landing_airport,
   flight.airplane_id,
 
+  airplane.name as airplane_name,
+
   passenger.dni,
-  passenger.name,
+  passenger.name as passenger_name,
   passenger.age,
-  passenger.country
+  passenger.country,
+
+  seat.seat_column,
+  seat.seat_row,
+
+  seat_type.name as seat_type_name
 
   FROM boarding_pass
 
-  INNER JOIN passenger 
-  ON boarding_pass.passenger_id = passenger.passenger_id
-
   INNER JOIN flight 
   ON boarding_pass.flight_id = flight.flight_id
+
+  INNER JOIN airplane 
+  ON airplane.airplane_id = flight.airplane_id
+
+  INNER JOIN passenger 
+  ON passenger.passenger_id = boarding_pass.passenger_id
+
+  INNER JOIN seat_type
+  ON seat_type.seat_type_id = boarding_pass.seat_type_id
+
+  LEFT JOIN seat 
+  ON seat.seat_id = boarding_pass.seat_id
   
-  WHERE boarding_pass.flight_id = ${id};`, (error, results, fields) => {
+  WHERE boarding_pass.flight_id = ${id};`, async (error, results, fields) => {
     if (error) {
       next(error)
       return
     }
-    const { flight_id, takeoff_date_time, takeoff_airport, landing_date_time, landing_airport, airplane_id } = results[0]
-    const passengersInfo = results.map(passenger => ({
-      passengerId: passenger.passenger_id,
-      dni: passenger.dni,
-      name: passenger.name,
-      age: passenger.age,
-      country: passenger.country,
-      boardingPassId: passenger.boarding_pass_id,
-      purchaseId: passenger.purchase_id,
-      seatTypeId: passenger.seat_type_id,
-      seatId: passenger.seat_id
-    }))
+    const flightSample = results[0]
+    const passengerList = await seatAssigner({
+      connection,
+      data: results,
+      airplaneName: flightSample.airplane_name,
+      next
+    })
     res.status(200).json({
       code: 200,
       data: {
-        flightId: flight_id,
-        takeoffDateTime: takeoff_date_time,
-        takeoffAirport: takeoff_airport,
-        landingDateTime: landing_date_time,
-        landingAirport: landing_airport,
-        airplaneId: airplane_id,
-        passengers: passengersInfo
+        flightId: flightSample.flight_id,
+        takeoffDateTime: flightSample.takeoff_date_time,
+        takeoffAirport: flightSample.takeoff_airport,
+        landingDateTime: flightSample.landing_date_time,
+        landingAirport: flightSample.landing_airport,
+        airplaneId: flightSample.airplane_id,
+        passengers: passengerList
+      }
+    })
+  })
+  connection.end()
+})
+
+router.get('/flights/test', (req, res, next) => {
+  const connection = getConnection(next)
+  connection.query(`SELECT
+
+  *
+
+  FROM seat_type;`, (error, results, fields) => {
+    if (error) {
+      next(error)
+      return
+    }
+    res.status(200).json({
+      code: 200,
+      data: {
+        ...results
       }
     })
   })

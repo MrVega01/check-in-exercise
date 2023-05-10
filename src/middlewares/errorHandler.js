@@ -14,6 +14,7 @@ const ERRORS_LIST = {
 }
 
 const errorHandler = (err, req, res, next) => {
+  console.log(err)
   const errorFunction = ERRORS_LIST[err.code] || ERRORS_LIST.defaultError
 
   errorFunction(res)
