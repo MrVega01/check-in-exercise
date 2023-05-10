@@ -36,7 +36,7 @@ function seatAssigner ({ data, airplaneName, next }) {
       // Register seats unmarked
       /// Minors
       minorsGrouped.forEach(group => {
-        const groupAssigned = assignSeatToGroup(airplane, airplaneName, group[0].type_id, true, group)
+        const groupAssigned = assignSeatToGroup(airplane, airplaneName, group[0].seat_type_id, true, group)
         groupAssigned.forEach(passenger => {
           const seatId = getSeatId(results, passenger.seat_row, passenger.seat_column, passenger.airplane_id)
           passengerList.push(generatePassengerInfo(passenger, seatId))
@@ -44,7 +44,7 @@ function seatAssigner ({ data, airplaneName, next }) {
       })
       /// Majors
       majorsGrouped.forEach(group => {
-        const groupAssigned = assignSeatToGroup(airplane, airplaneName, group[0].type_id, false, group)
+        const groupAssigned = assignSeatToGroup(airplane, airplaneName, group[0].seat_type_id, false, group)
         groupAssigned.forEach(passenger => {
           const seatId = getSeatId(results, passenger.seat_row, passenger.seat_column, passenger.airplane_id)
           passengerList.push(generatePassengerInfo(passenger, seatId))

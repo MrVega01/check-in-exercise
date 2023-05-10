@@ -48,30 +48,35 @@ function getFlights (req, res, next) {
   ON seat.seat_id = boarding_pass.seat_id
   
   WHERE boarding_pass.flight_id = ${id};`, async (error, results, fields) => {
-    if (error) {
-      next(error)
-      return
-    }
-    const flightSample = results[0]
-    const passengerList = await seatAssigner({
-      connection,
-      data: results,
-      airplaneName: flightSample.airplane_name,
-      next
-    })
-    res.status(200).json({
-      code: 200,
-      data: {
-        flightId: flightSample.flight_id,
-        takeoffDateTime: flightSample.takeoff_date_time,
-        takeoffAirport: flightSample.takeoff_airport,
-        landingDateTime: flightSample.landing_date_time,
-        landingAirport: flightSample.landing_airport,
-        airplaneId: flightSample.airplane_id,
-        passengers: passengerList
+    try {
+      if (error) {
+        next(error)
+        return
       }
-    })
+      const flightSample = results[0]
+      const passengerList = await seatAssigner({
+        connection,
+        data: results,
+        airplaneName: flightSample.airplane_name,
+        next
+      })
+      res.status(200).json({
+        code: 200,
+        data: {
+          flightId: flightSample.flight_id,
+          takeoffDateTime: flightSample.takeoff_date_time,
+          takeoffAirport: flightSample.takeoff_airport,
+          landingDateTime: flightSample.landing_date_time,
+          landingAirport: flightSample.landing_airport,
+          airplaneId: flightSample.airplane_id,
+          passengers: passengerList
+        }
+      })
+
+      connection.end()
+    } catch (error) {
+      next(error)
+    }
   })
-  connection.end()
 }
 module.exports = getFlights
