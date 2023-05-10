@@ -23,6 +23,13 @@ npm install
 
 ``npm run dev``: Inicia la API con nodemon, lo que actualiza la app al detectar cualquier cambio en el código.
 
+## Endpoints
+
+Obtener simulación check-in por ID de vuelo
+```bash
+/flights/:id/passengers
+```
+
 ## Estatus
 
 **Node**: >= 18.16.0
